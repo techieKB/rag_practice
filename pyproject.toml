@@ -1,0 +1,41 @@
+[project]
+name = "mdsearch"
+version = "0.1.0"
+description = "Local-first hybrid search over personal Markdown notes"
+readme = "README.md"
+authors = [
+    { name = "Kunal Bakshi", email = "bakshikunal282@gmail.com" }
+]
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "fastapi>=0.162.0",
+    "numpy>=2.5.4",
+    "ollama>=0.6.3",
+    "pgvector>=0.5.1",
+    "psycopg2-binary>=2.9.13",
+    "rank-bm25>=0.2.2",
+    "sentence-transformers>=6.2.0",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[project.scripts]
+mdsearch-ingest = "mdsearch.ingest:main"
+
+[build-system]
+requires = ["uv_build>=0.11.3,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["tests"]
+markers = [
+  "integration: needs Postgres (docker compose up -d)",
+  "eval: needs Postgres + Ollama + cross-encoder model",
+]
+addopts = "-m 'not integration and not eval'"
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.2.0",
+]
